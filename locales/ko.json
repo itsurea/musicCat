@@ -162,5 +162,9 @@
     "errorNotChannel": "음성 채널에 들어와 있지 않습니다.",
     "cooldownMessage": "`{name}` 명령어를 실행하기 전 {time} 초 만큼 기다려주세요.",
     "errorCommand": "명령어 실행에 실패했습니다."
+  },
+  "setchannel": {
+    "description": "명령어를 사용하지 않고 유튜브 링크 입력시 바로 재생할 수 있게 하는 채널을 설정하는 명령어 입니다.",
+    "result": "채널설정이 완료되었습니다."
   }
 }

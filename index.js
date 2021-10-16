@@ -17,19 +17,17 @@ client.login(TOKEN);
 client.commands = new Collection();
 client.prefix = PREFIX;
 client.queue = new Map();
+client.defaultChannels = new Object();
 const cooldowns = new Collection();
 const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 /**
  * Client Events
  */
-client.on("ready", () => {
+client.on("ready", async () => {
   console.log(`${client.user.username} ready!`);
+  client.defaultChannels = await db.defaultChannels.getDefaultChannels();
   client.user.setActivity(`도움말은 ${PREFIX}help 입니다.`, { type: "LISTENING" });
-  /*client.guild.channels.create('노래신청 test', { reason: '테스트 한다'})
-    .then(console.log)
-    .catch(console.error);*/
-  //console.log(client);
 });
 client.on("warn", (info) => console.log(info));
 client.on("error", console.error);
@@ -39,11 +37,18 @@ client.on("error", console.error);
  */
 
 client.on("guildCreate", (guild) => {
-  console.log("Join Server");
-  guild.channels.create("노래신청-test", {type: "text", reason: "hihi"})
-    .then((channel)=>{
-      console.log(channel);
+  guild.channels.create("노래신청", {type: "text", topic: "노래하는애옹이의 기본채널입니다."})
+    .then(async (channel) => {
+      const defaultChannelObj = {
+        serverId: channel.guild.id,
+        channelId: channel.id,
+      }
+      await db.defaultChannels.registerChannel(defaultChannelObj);
     });
+});
+
+client.on("guildDelete", async (guild) => {
+  await db.defaultChannels.deleteChannel(guild.id);
 });
 
 /**
@@ -58,6 +63,17 @@ for (const file of commandFiles) {
 client.on("message", async (message) => {
   if (message.author.bot) return;
   if (!message.guild) return;
+
+  const videoPattern = /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/gi;
+
+  const findDefault = client.defaultChannels.find((element) => element.serverId === message.channel.guild.id);
+  if (findDefault.channelId === message.channel.id) {
+    if (videoPattern.test(message.content)) {
+      const playcommand = client.commands.get("play");
+      playcommand.execute(message, [message.content]);
+    }
+  }
+
 
   const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(PREFIX)})\\s*`);
   if (!prefixRegex.test(message.content)) return;

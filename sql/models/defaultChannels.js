@@ -25,21 +25,22 @@ module.exports = function(sequelize, Sequelize) {
   DefaultChannels.getDefaultChannels = async function() {
     const res = await this.findAll({
       attributes: ["serverId", "channelId"],
+      raw: true
     });
 
     return res;
   }
 
-  DefaultChannels.deleteChannel = async function (id) {
-    const ip = await this.findOne({
+  DefaultChannels.deleteChannel = async function (serverId) {
+    const server = await this.findOne({
       where: {
-        id
+        serverId
       }
     });
 
-    if (!ip) return false;
+    if (!server) return false;
 
-    await ip.destroy();
+    await server.destroy();
     return true;
   }
 
@@ -47,13 +48,24 @@ module.exports = function(sequelize, Sequelize) {
     const { serverId, channelId } = obj;
     const id = await uuidv4();
 
-    const addChannel = await this.create({
-      id,
-      serverId,
-      channelId
+    const oldChannelId = await this.findOne({
+      where: {
+        serverId
+      },
     });
 
-    return addChannel;
+    if (oldChannelId) {
+      oldChannelId.channelId = channelId;
+      return oldChannelId;
+    } else {
+      const addChannel = await this.create({
+        id,
+        serverId,
+        channelId
+      });
+
+      return addChannel;
+    }
   }
 
   return DefaultChannels;
