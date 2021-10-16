@@ -27,7 +27,7 @@ const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 client.on("ready", async () => {
   console.log(`${client.user.username} ready!`);
   client.defaultChannels = await db.defaultChannels.getDefaultChannels();
-  client.user.setActivity(`도움말은 ${PREFIX}help 입니다.`, { type: "LISTENING" });
+  client.user.setActivity(`도움말은 ${PREFIX}help 다냥`, { type: "LISTENING" });
 });
 client.on("warn", (info) => console.log(info));
 client.on("error", console.error);
@@ -37,7 +37,7 @@ client.on("error", console.error);
  */
 
 client.on("guildCreate", (guild) => {
-  guild.channels.create("노래신청", {type: "text", topic: "노래하는애옹이의 기본채널입니다."})
+  guild.channels.create("노래신청", {type: "text", topic: "노래하는애옹이의 기본채널이다냥"})
     .then(async (channel) => {
       const defaultChannelObj = {
         serverId: channel.guild.id,
