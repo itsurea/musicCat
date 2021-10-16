@@ -17,3 +17,8 @@ exports.PRUNING = (config ? config.PRUNING : (process.env.PRUNING === 'true' ? t
 exports.STAY_TIME = (config ? config.STAY_TIME : parseInt(process.env.STAY_TIME)) || 30;
 exports.DEFAULT_VOLUME = (config ? config.DEFAULT_VOLUME : parseInt(process.env.DEFAULT_VOLUME)) || 100;
 exports.LOCALE = (config ? config.LOCALE : process.env.LOCALE) || "en";
+exports.SQL_HOST = (config.SQL_HOST);
+exports.SQL_PORT = (config.SQL_PORT);
+exports.SQL_USER = (config.SQL_USER);
+exports.SQL_PASS = (config.SQL_PASS);
+exports.SQL_DB = (config.SQL_DB);

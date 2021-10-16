@@ -6,6 +6,7 @@ const { readdirSync } = require("fs");
 const { join } = require("path");
 const { TOKEN, PREFIX } = require("./util/Util");
 const i18n = require("./util/i18n");
+const db = require("./sql");
 
 const client = new Client({
   disableMentions: "everyone",
@@ -24,10 +25,26 @@ const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
  */
 client.on("ready", () => {
   console.log(`${client.user.username} ready!`);
-  client.user.setActivity(`${PREFIX}help and ${PREFIX}play`, { type: "LISTENING" });
+  client.user.setActivity(`도움말은 ${PREFIX}help 입니다.`, { type: "LISTENING" });
+  /*client.guild.channels.create('노래신청 test', { reason: '테스트 한다'})
+    .then(console.log)
+    .catch(console.error);*/
+  //console.log(client);
 });
 client.on("warn", (info) => console.log(info));
 client.on("error", console.error);
+
+/**
+ * Join Server
+ */
+
+client.on("guildCreate", (guild) => {
+  console.log("Join Server");
+  guild.channels.create("노래신청-test", {type: "text", reason: "hihi"})
+    .then((channel)=>{
+      console.log(channel);
+    });
+});
 
 /**
  * Import all commands
