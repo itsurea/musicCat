@@ -22,7 +22,7 @@ cd evobot
 npm install
 ```
 
-After installation finishes follow configuration instructions then run `node index.js` to start the bot.
+After installation finishes follow configuration instructions then run `node app.js` to start the bot.
 
 ## ⚙️ Configuration
 

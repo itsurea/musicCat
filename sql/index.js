@@ -26,7 +26,7 @@ const sequelize = new Sequelize(SQL_DB, SQL_USER, SQL_PASS, sqlOptions);
 const db ={};
 
 fs.readdirSync(__dirname + "/models/").filter(function (file) {
-  return (file.indexOf(".") !== 0) && (file !== "index.js");
+  return (file.indexOf(".") !== 0) && (file !== "app.js");
 }).forEach(function (file) {
   const model = require(path.join(__dirname + "/models/", file))(
     sequelize,
