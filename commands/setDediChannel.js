@@ -12,8 +12,10 @@ module.exports = {
       channelId: message.channel.id
     }
     await db.defaultChannels.registerChannel(defaultChannelObj);
-    const findDefault = message.client.defaultChannels.find((element) => element.serverId === message.channel.guild.id);
-    findDefault.channelId = message.channel.id;
+    let findDefault = message.client.defaultChannels.find((element) => element.serverId === message.channel.guild.id);
+    if (findDefault !== undefined) {
+      findDefault.channelId = message.channel.id;
+    }
     return message.channel.send(i18n.__("setchannel.result"));
   }
 };

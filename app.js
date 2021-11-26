@@ -67,13 +67,15 @@ client.on("message", async (message) => {
   const videoPattern = /^(https?:\/\/)?(www\.)?(m\.)?(youtube\.com|youtu\.?be)\/.+$/gi;
 
   const findDefault = client.defaultChannels.find((element) => element.serverId === message.channel.guild.id);
-  if (findDefault.channelId === message.channel.id) {
-    if (videoPattern.test(message.content)) {
-      const playcommand = client.commands.get("play");
-      playcommand.execute(message, [message.content]);
+
+  if (findDefault !== undefined) {
+    if (findDefault.channelId === message.channel.id) {
+      if (videoPattern.test(message.content)) {
+        const playcommand = client.commands.get("play");
+        playcommand.execute(message, [message.content]);
+      }
     }
   }
-
 
   const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(PREFIX)})\\s*`);
   if (!prefixRegex.test(message.content)) return;
